@@ -1,0 +1,10 @@
+# Generated outputs
+output/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code internal
+.claude/
