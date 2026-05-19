@@ -151,6 +151,8 @@ svg.stage:active {{ cursor:grabbing; }}
 .fill-large_value_examiner {{ fill:#b8c8de; stroke:#2c4f70; }}
 .fill-first_time_recipient {{ fill:#d9c7e2; stroke:#6b3f8a; }}
 .fill-peeling_chain        {{ fill:#fde8c8; stroke:#b85c00; }}
+.fill-dust_attack          {{ fill:#f0b8f8; stroke:#8b008b; }}
+.fill-dust_linkage         {{ fill:#d8a8e8; stroke:#6a0080; }}
 .dimmed {{ opacity:.1 !important; }}
 .selected-ring {{ fill:none; stroke:var(--ink); stroke-width:2.5;
   stroke-dasharray:2 3; pointer-events:none; }}
@@ -354,13 +356,16 @@ Press <b>Esc</b> to deselect.</div>
 const DATA = {data_json};
 
 const FLAG_TYPES = ['normal','sweep','wash_trading','peeling_chain',
+                    'dust_attack','dust_linkage',
                     'excess_input_filter','large_value_examiner','first_time_recipient'];
 const FLAG_COLORS = {{
   normal:'#c5d4e2', sweep:'#f5d49b', wash_trading:'#e6a3a3', peeling_chain:'#fde8c8',
+  dust_attack:'#f0b8f8', dust_linkage:'#d8a8e8',
   excess_input_filter:'#c3d8b5', large_value_examiner:'#b8c8de', first_time_recipient:'#d9c7e2',
 }};
 const FLAG_STROKE = {{
   normal:'#6b8aa6', sweep:'#b88835', wash_trading:'#b13d3d', peeling_chain:'#b85c00',
+  dust_attack:'#8b008b', dust_linkage:'#6a0080',
   excess_input_filter:'#4a7e3a', large_value_examiner:'#2c4f70', first_time_recipient:'#6b3f8a',
 }};
 const FLAG_PILL_COLORS = {{
@@ -368,14 +373,16 @@ const FLAG_PILL_COLORS = {{
   sweep:                {{bg:'#f5d49b',color:'#7a5800'}},
   wash_trading:         {{bg:'#e6a3a3',color:'#7a1a1a'}},
   peeling_chain:        {{bg:'#fde8c8',color:'#7a3800'}},
+  dust_attack:          {{bg:'#f0b8f8',color:'#5a006a'}},
+  dust_linkage:         {{bg:'#d8a8e8',color:'#450060'}},
   excess_input_filter:  {{bg:'#c3d8b5',color:'#2a5020'}},
   large_value_examiner: {{bg:'#b8c8de',color:'#1a3050'}},
   first_time_recipient: {{bg:'#d9c7e2',color:'#3d1a5a'}},
 }};
 
 const primaryFlag = tx => {{
-  const order = ['wash_trading','sweep','peeling_chain','excess_input_filter',
-                 'large_value_examiner','first_time_recipient','normal'];
+  const order = ['dust_attack','dust_linkage','wash_trading','sweep','peeling_chain',
+                 'excess_input_filter','large_value_examiner','first_time_recipient','normal'];
   for (const f of order) if (tx.flags.includes(f)) return f;
   return 'normal';
 }};
@@ -657,7 +664,7 @@ function onTxClick(node) {{
   const outLines=tx.outputs.map(o=>
     `  <span class="pink">●</span> <span class="addr">${{shortAddr(o.addr)}}</span>  ${{fmt(o.val)}} ${{mkCopy(o.addr)}}`).join('\\n');
   const flagPills=tx.flags.map(f=>{{
-    const cls=f==='wash_trading'?'red':f==='normal'?'green':'accent';
+    const cls=f==='wash_trading'||f==='dust_attack'||f==='dust_linkage'?'red':f==='normal'?'green':'accent';
     return `<span class="${{cls}}">[${{f}}]</span>`;
   }}).join(' ');
   const change=tx.change_address
@@ -984,7 +991,7 @@ function buildTimeline() {{
 }}
 
 function buildSuspTable() {{
-  const PRIO=['wash_trading','sweep','excess_input_filter','large_value_examiner','first_time_recipient'];
+  const PRIO=['dust_attack','dust_linkage','wash_trading','sweep','peeling_chain','excess_input_filter','large_value_examiner','first_time_recipient'];
   const rows=DATA.transactions
     .filter(tx=>tx.flags.some(f=>f!=='normal'))
     .sort((a,b)=>PRIO.indexOf(primaryFlag(a))-PRIO.indexOf(primaryFlag(b)))

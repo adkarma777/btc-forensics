@@ -48,6 +48,7 @@ def main() -> None:
     print(f"           {'flag':<26} {'count':>5}  {'% of txs':>8}")
     print(f"           {'-'*42}")
     for fl in ("normal", "sweep", "wash_trading", "peeling_chain",
+               "dust_attack", "dust_linkage",
                "excess_input_filter", "large_value_examiner", "first_time_recipient"):
         cnt = flag_counts.get(fl, 0)
         pct = cnt / len(txs) * 100

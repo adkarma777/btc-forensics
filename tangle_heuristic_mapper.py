@@ -27,6 +27,8 @@ import os
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple
 
+from dust_attack import detect_dust_attacks
+
 LARGE_VALUE_THRESHOLD = 0.85   # paper threshold t for Algorithm 2
 
 
@@ -294,9 +296,9 @@ def cluster_and_analyze(
     H: Set[str] = set()
     results: Dict[int, HeuristicResult] = {}
 
-    # Detect actual peeling chains (multi-hop, value-linked, length>=N) once,
-    # up front. Membership in this map replaces the old per-tx predicate.
+    # Detect actual peeling chains and dust attacks up front (single pass each).
     peeling_chain_map: Dict[int, str] = detect_peeling_chains(transactions)
+    dust_map: Dict[int, str] = detect_dust_attacks(transactions)
 
     # 1) Initialise DSU with every address present in the dataset.
     for tx in transactions:
@@ -336,6 +338,12 @@ def cluster_and_analyze(
             res.flags.append("peeling_chain")
             if res.change_address is None:
                 res.change_address, res.detected_by = addr_pc, "peeling_chain"
+
+        dust_kind = dust_map.get(tx.id)
+        if dust_kind == "dusting":
+            res.flags.append("dust_attack")
+        elif dust_kind == "dust_linkage":
+            res.flags.append("dust_linkage")
 
         if is_sweep(tx):
             res.flags.append("sweep")
@@ -387,7 +395,7 @@ def detect_wash_trading_pass(
     n = 0
     for tx in transactions:
         flags = results[tx.id].flags
-        if "sweep" in flags or "peeling_chain" in flags:
+        if "sweep" in flags or "peeling_chain" in flags or "dust_attack" in flags or "dust_linkage" in flags:
             continue
         if is_wash_trading(tx, ds):
             results[tx.id].flags.append("wash_trading")
@@ -575,6 +583,7 @@ def main() -> None:
     print(f"[done]    wrote {args.output}")
     print(f"          {len(clusters)} clusters covering {len(H)} addresses")
     for fl in ("normal", "sweep", "wash_trading", "peeling_chain",
+               "dust_attack", "dust_linkage",
                "excess_input_filter", "large_value_examiner", "first_time_recipient"):
         print(f"          {fl:<24} {flag_counts.get(fl, 0)}")
 
