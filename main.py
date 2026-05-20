@@ -1,11 +1,11 @@
 """
 main.py
 -------
-TangleForensix pipeline for real Bitcoin transaction data.
+BTxC Forensix pipeline for real Bitcoin transaction data.
 
 Stages:
   1. tangle_heuristic_mapper  — analyses btc_transactions.csv  → output/btc_results.json
-  2. tangle_renderer          — renders the interactive GUI     → output/btc_tangleforensix.html
+  2. tangle_renderer          — renders the interactive GUI     → output/btc_btxc_forensix.html
 """
 
 import argparse
@@ -20,11 +20,11 @@ from tangle_renderer import build_html
 
 DEFAULT_INPUT  = "btc_transactions.csv"
 DEFAULT_JSON   = "output/btc_results.json"
-DEFAULT_HTML   = "output/btc_tangleforensix.html"
+DEFAULT_HTML   = "output/btc_btxc_forensix.html"
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Run TangleForensix on Bitcoin transaction data.")
+    p = argparse.ArgumentParser(description="Run BTxC Forensix on Bitcoin transaction data.")
     p.add_argument("--input",  default=DEFAULT_INPUT,  help="Path to BTC transactions CSV")
     p.add_argument("--json",   default=DEFAULT_JSON,   help="Output results JSON path")
     p.add_argument("--html",   default=DEFAULT_HTML,   help="Output GUI HTML path")

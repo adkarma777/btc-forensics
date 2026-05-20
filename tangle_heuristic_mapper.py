@@ -2,7 +2,7 @@
 tangle_heuristic_mapper.py
 --------------------------
 Implementation of the *Tangle Heuristic Mapper* module (Section II of
-TangleForensix). Implements:
+BTxC Forensix). Implements:
 
   Algorithm 1  — Excess-input filter heuristic   (§II-A)
   Algorithm 2  — Large-value examiner heuristic  (§II-B)
@@ -562,7 +562,7 @@ def write_results_json(
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Apply TangleForensix heuristics.")
+    p = argparse.ArgumentParser(description="Apply BTxC Forensix heuristics.")
     p.add_argument("--input",  default="output/transactions.csv")
     p.add_argument("--output", default="output/results.json")
     args = p.parse_args()

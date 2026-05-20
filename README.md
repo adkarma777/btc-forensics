@@ -1,8 +1,8 @@
-# TangleForensix — Reference Implementation
+# BTxC Forensix — Reference Implementation
 
 Faithful Python implementation of the paper:
 
-> **TangleForensix: A tool for forensic analysis of IOTA funds**
+> **BTxC Forensix: A tool for forensic analysis of IOTA funds**
 > Department of Information Technology, IIIT Allahabad
 
 The project mirrors the paper's three-module architecture:
@@ -11,7 +11,7 @@ The project mirrors the paper's three-module architecture:
 |---|---|---|
 | §IV  Dataset | `tangle_dataset_generator.py` | `output/transactions.csv` |
 | §II  Heuristics + Clustering | `tangle_heuristic_mapper.py` | `output/results.json` |
-| §III Renderer | `tangle_renderer.py` | `output/tangleforensix.html` (GUI) |
+| §III Renderer | `tangle_renderer.py` | `output/btxc_forensix.html` (GUI) |
 
 ---
 
@@ -129,9 +129,9 @@ python tangle_heuristic_mapper.py \
 
 python tangle_renderer.py \
   --input  output/btc_results.json \
-  --output output/btc_tangleforensix.html
+  --output output/btc_btxc_forensix.html
 
-xdg-open output/btc_tangleforensix.html
+xdg-open output/btc_btxc_forensix.html
 ```
 
 Expected BTC CSV schema:
@@ -216,7 +216,7 @@ iota_project/
 └── output/
     ├── transactions.csv
     ├── results.json
-    └── tangleforensix.html        ← open this
+    └── btxc_forensix.html        ← open this
 ```
 
 ---
@@ -232,9 +232,9 @@ python main.py
 This runs all three stages and writes everything to `output/`. Then open the GUI:
 
 ```bash
-xdg-open output/tangleforensix.html   # Linux
-open     output/tangleforensix.html   # macOS
-start    output/tangleforensix.html   # Windows
+xdg-open output/btxc_forensix.html   # Linux
+open     output/btxc_forensix.html   # macOS
+start    output/btxc_forensix.html   # Windows
 ```
 
 ### Options
@@ -248,7 +248,7 @@ python tangle_dataset_generator.py --output output/transactions.csv
 python tangle_heuristic_mapper.py  --input  output/transactions.csv \
                                    --output output/results.json
 python tangle_renderer.py          --input  output/results.json \
-                                   --output output/tangleforensix.html
+                                   --output output/btxc_forensix.html
 ```
 
 ---

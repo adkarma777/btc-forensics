@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project does
 
-TangleForensix is a forensic analysis tool for Bitcoin transactions. It applies graph heuristics to detect suspicious patterns — sweep transactions, wash trading, change-address clusters — and renders an interactive D3.js GUI for exploration.
+BTxC Forensix is a forensic analysis tool for Bitcoin transactions. It applies graph heuristics to detect suspicious patterns — sweep transactions, wash trading, change-address clusters — and renders an interactive D3.js GUI for exploration.
 
 The project is a reference implementation of the paper:
-> **TangleForensix: A tool for forensic analysis of IOTA funds**, IIIT Allahabad
+> **BTxC Forensix: A tool for forensic analysis of IOTA funds**, IIIT Allahabad
 
 ## Running the project
 
@@ -20,10 +20,10 @@ python main.py
 # Custom BTC CSV
 python main.py --input /path/to/btc_transactions.csv \
                --json  output/btc_results.json \
-               --html  output/btc_tangleforensix.html
+               --html  output/btc_btxc_forensix.html
 
 # Open the GUI
-xdg-open output/btc_tangleforensix.html   # Linux
+xdg-open output/btc_btxc_forensix.html   # Linux
 ```
 
 Default BTC input path hardcoded in `main.py`: `/home/anshul/btc_project/data/btc_transactions.csv`
@@ -39,7 +39,7 @@ python tangle_heuristic_mapper.py \
 # Render only (needs results JSON)
 python tangle_renderer.py \
   --input  output/btc_results.json \
-  --output output/btc_tangleforensix.html
+  --output output/btc_btxc_forensix.html
 ```
 
 ## Architecture
@@ -102,7 +102,7 @@ btc_transactions.csv
 | File | Description |
 |---|---|
 | `output/btc_results.json` | Per-tx flags + change addresses + cluster list |
-| `output/btc_tangleforensix.html` | Self-contained interactive GUI (open in browser) |
+| `output/btc_btxc_forensix.html` | Self-contained interactive GUI (open in browser) |
 
 ## GUI features (rendered HTML)
 

@@ -1,7 +1,7 @@
 """
 tangle_renderer.py
 ------------------
-Tangle Renderer module (Section III of TangleForensix).
+Tangle Renderer module (Section III of BTxC Forensix).
 
 Reads results.json and emits a single self-contained HTML file with an
 interactive D3.js GUI:
@@ -32,7 +32,7 @@ def build_html(payload: dict) -> str:
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TangleForensix — A tool for forensic analysis of IOTA funds</title>
+<title>BTxC Forensix — A tool for forensic analysis of IOTA funds</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 *,*::before,*::after {{ box-sizing:border-box; margin:0; padding:0; }}
@@ -220,7 +220,7 @@ svg.stage:active {{ cursor:grabbing; }}
 <body>
 
 <header>
-  <div class="brand">TangleForensix <small>IOTA / BTC Forensic Tool</small></div>
+  <div class="brand">BTxC Forensix <small>IOTA / BTC Forensic Tool</small></div>
   <div class="tagline">A tool for forensic analysis of IOTA funds</div>
 </header>
 <div class="strip">
@@ -548,7 +548,7 @@ function exportTxCSV() {{
   const csv = rows.map(r=>r.map(v=>`"${{String(v).replace(/"/g,'""')}}"`).join(',')).join('\\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv],{{type:'text/csv'}}));
-  a.download = 'tangleforensix_filtered.csv';
+  a.download = 'btxc_forensix_filtered.csv';
   a.click();
 }}
 
@@ -1045,9 +1045,9 @@ window.addEventListener('resize', ()=>{{ renderTxView(); renderClView(); }});
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Render TangleForensix GUI.")
+    p = argparse.ArgumentParser(description="Render BTxC Forensix GUI.")
     p.add_argument("--input",  default="output/results.json")
-    p.add_argument("--output", default="output/tangleforensix.html")
+    p.add_argument("--output", default="output/btxc_forensix.html")
     args = p.parse_args()
 
     with open(args.input, "r", encoding="utf-8") as f:

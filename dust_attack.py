@@ -1,7 +1,7 @@
 """
 dust_attack.py
 --------------
-Dust-attack detection for TangleForensix.
+Dust-attack detection for BTxC Forensix.
 
 WHAT THIS ADAPTS (and what it deliberately does NOT)
 ----------------------------------------------------

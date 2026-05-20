@@ -1,4 +1,4 @@
-# TangleForensix — Complete Project Documentation
+# BTxC Forensix — Complete Project Documentation
 
 ---
 
@@ -24,11 +24,11 @@
 
 ## 1. Project Overview
 
-**TangleForensix** is a forensic analysis tool for Bitcoin (BTC) transactions. It reads a CSV file of raw Bitcoin transactions, applies a series of graph-based heuristics to detect suspicious patterns, clusters addresses that likely belong to the same real-world entity, and renders an interactive browser-based GUI for visual exploration.
+**BTxC Forensix** is a forensic analysis tool for Bitcoin (BTC) transactions. It reads a CSV file of raw Bitcoin transactions, applies a series of graph-based heuristics to detect suspicious patterns, clusters addresses that likely belong to the same real-world entity, and renders an interactive browser-based GUI for visual exploration.
 
 ### What problems does it solve?
 
-Bitcoin is pseudonymous — every wallet address is just a random string. However, because the blockchain is public, the flow of funds between addresses can be analysed. TangleForensix automates the following forensic tasks:
+Bitcoin is pseudonymous — every wallet address is just a random string. However, because the blockchain is public, the flow of funds between addresses can be analysed. BTxC Forensix automates the following forensic tasks:
 
 | Task | What it finds |
 |---|---|
@@ -64,7 +64,7 @@ write_results_json()        ← saves btc_results.json
 build_html()                ← embeds JSON into self-contained HTML page
         │
         ▼
-btc_tangleforensix.html     ← open in browser
+btc_btxc_forensix.html     ← open in browser
 ```
 
 ### Module responsibilities
@@ -710,7 +710,7 @@ python tangle_renderer.py \
 ### Open the GUI
 
 ```bash
-xdg-open output/btc_tangleforensix.html    # Linux
+xdg-open output/btc_btxc_forensix.html    # Linux
 ```
 
 Or paste the file path directly into your browser.
@@ -791,5 +791,5 @@ tx3,            E;F,             9000;400,     G,               9300
 
 ---
 
-*Documentation generated for TangleForensix — Bitcoin Forensic Analysis Tool*
-*Based on: "TangleForensix: A tool for forensic analysis of IOTA funds", IIIT Allahabad*
+*Documentation generated for BTxC Forensix — Bitcoin Forensic Analysis Tool*
+*Based on: "BTxC Forensix: A tool for forensic analysis of IOTA funds", IIIT Allahabad*
