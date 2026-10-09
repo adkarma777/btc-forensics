@@ -204,7 +204,12 @@ while len(rows) < 200:
 random.shuffle(rows)
 
 # ── Write CSV ─────────────────────────────────────────────────────────────────
-out_path = "/home/anshul/iota_project/btc_presentation.csv"
+import argparse
+parser = argparse.ArgumentParser(description="Generate synthetic BTC presentation dataset.")
+parser.add_argument("--output", default="btc_presentation.csv", help="Output CSV path")
+args, _ = parser.parse_known_args()
+
+out_path = args.output
 fieldnames = ["transaction_id", "input_addresses", "input_values",
               "output_addresses", "output_values"]
 
@@ -213,4 +218,5 @@ with open(out_path, "w", newline="", encoding="utf-8") as f:
     w.writeheader()
     w.writerows(rows)
 
-print(f"Written {len(rows)} transactions → {out_path}")
+print(f"Written {len(rows)} transactions -> {out_path}")
+

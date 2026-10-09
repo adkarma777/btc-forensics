@@ -17,18 +17,32 @@ from tangle_heuristic_mapper import (
     detect_wash_trading_pass, write_results_json,
 )
 from tangle_renderer import build_html
+from hybrid_feature_extractor import (
+    extract_hybrid_dataset, export_features_csv, export_graph_npz,
+)
 
-DEFAULT_INPUT  = "btc_transactions.csv"
-DEFAULT_JSON   = "output/btc_results.json"
-DEFAULT_HTML   = "output/btc_btxc_forensix.html"
+DEFAULT_INPUT        = "btc_transactions.csv"
+DEFAULT_JSON         = "output/btc_results.json"
+DEFAULT_HTML         = "output/btc_btxc_forensix.html"
+DEFAULT_FEATURES_CSV = "output/hybrid_features.csv"
+DEFAULT_FEATURES_NPZ = "output/hybrid_graph.npz"
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Run BTxC Forensix on Bitcoin transaction data.")
-    p.add_argument("--input",  default=DEFAULT_INPUT,  help="Path to BTC transactions CSV")
-    p.add_argument("--json",   default=DEFAULT_JSON,   help="Output results JSON path")
-    p.add_argument("--html",   default=DEFAULT_HTML,   help="Output GUI HTML path")
+    p = argparse.ArgumentParser(description="Run BTxC Forensix & Hybrid Graph ML pipeline.")
+    p.add_argument("--input",        default=DEFAULT_INPUT,        help="Path to BTC transactions CSV")
+    p.add_argument("--json",         default=DEFAULT_JSON,         help="Output results JSON path")
+    p.add_argument("--html",         default=DEFAULT_HTML,         help="Output GUI HTML path")
+    p.add_argument("--features-csv", default=DEFAULT_FEATURES_CSV, help="Output hybrid feature CSV path")
+    p.add_argument("--features-npz", default=DEFAULT_FEATURES_NPZ, help="Output GNN graph tensor NPZ path")
     args = p.parse_args()
+
+    # Graceful fallback if default input file doesn't exist
+    if args.input == DEFAULT_INPUT and not os.path.exists(args.input):
+        if os.path.exists("btc_presentation.csv"):
+            args.input = "btc_presentation.csv"
+        elif os.path.exists("btc_transactions_1000.csv"):
+            args.input = "btc_transactions_1000.csv"
 
     # ── Stage 1: load & analyse ──────────────────────────────────────
     print(f"[load]     reading {args.input}")
@@ -53,7 +67,7 @@ def main() -> None:
         cnt = flag_counts.get(fl, 0)
         pct = cnt / len(txs) * 100
         print(f"           {fl:<26} {cnt:>5}   {pct:>6.1f}%")
-    print(f"\n           results  → {args.json}")
+    print(f"\n           results  -> {args.json}")
 
     # ── Stage 2: render GUI ──────────────────────────────────────────
     with open(args.json, encoding="utf-8") as f:
@@ -63,6 +77,14 @@ def main() -> None:
     with open(args.html, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"[render]   {args.html}  ({len(html)//1024} KB)")
+
+    # ── Stage 3: extract hybrid ML tensors ───────────────────────────
+    hybrid_data = extract_hybrid_dataset(txs, results, ds, clusters)
+    export_features_csv(args.features_csv, txs, hybrid_data)
+    export_graph_npz(args.features_npz, txs, hybrid_data)
+    print(f"[features] {args.features_csv}  ({hybrid_data['num_nodes']} nodes, {len(hybrid_data['all_features'])} features)")
+    print(f"[tensor]   {args.features_npz}  ({hybrid_data['num_edges']} edges)")
+
     print(f"\nDone.  Open the GUI:\n  xdg-open {args.html}")
 
 
